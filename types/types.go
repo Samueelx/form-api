@@ -10,13 +10,13 @@ type UserStore interface {
 }
 
 type RegisterUserPayload struct {
-	FirstName string `json:"fistName"`
-	LastName  string `json:"lastName"`
-	Email     string `json:"email"`
-	Town      string `json:"town"`
-	Age       uint64 `json:"age"`
-	Gender    string `json:"gender"`
-	Password  string `json:"password"`
+	FirstName string `json:"fistName" validate:"required"`
+	LastName  string `json:"lastName" validate:"required"`
+	Email     string `json:"email" validate:"required,email"`
+	Town      string `json:"town" validate:"required"`
+	Age       uint64 `json:"age" validate:"required"`
+	Gender    string `json:"gender" validate:"required"`
+	Password  string `json:"password" validate:"required,min=3,max=130"`
 }
 
 type User struct {
@@ -24,7 +24,7 @@ type User struct {
 	FirstName string    `json:"firstName"`
 	LastName  string    `json:"lastName"`
 	Email     string    `json:"email"`
-	Password  string    `json:"password"`
+	Password  string    `json:"-"`
 	Age       uint64    `json:"age"`
 	Town      string    `json:"town"`
 	Gender    string    `json:"gender"`

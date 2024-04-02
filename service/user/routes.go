@@ -7,6 +7,7 @@ import (
 	"github.com/Samueelx/form-api/service/auth"
 	"github.com/Samueelx/form-api/types"
 	"github.com/Samueelx/form-api/utils"
+	"github.com/go-playground/validator/v10"
 	"github.com/gorilla/mux"
 )
 
@@ -30,8 +31,15 @@ func (h *Handler) HandleLogin(w http.ResponseWriter, r *http.Request) {
 func (h *Handler) HandleRegister(w http.ResponseWriter, r *http.Request) {
 	/**Get JSON Payload*/
 	var payload types.RegisterUserPayload
-	if err := utils.ParseJSON(r, payload); err != nil {
+	if err := utils.ParseJSON(r, &payload); err != nil {
 		utils.WriteError(w, http.StatusBadRequest, err)
+		return
+	}
+	/**Validate the payload*/
+	if err := utils.Validate.Struct(payload); err != nil {
+		errors := err.(validator.ValidationErrors)
+		utils.WriteError(w, http.StatusBadRequest, fmt.Errorf("invalid payload %v", errors))
+		return
 	}
 	/**Check if User exists*/
 	_, err := h.store.GetUserByEmail(payload.Email)
