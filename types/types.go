@@ -7,6 +7,7 @@ type UserStore interface {
 	GetUserByEmail(email string) (*User, error)
 	GetUserById(id int) (*User, error)
 	CreateUser(User) error
+	UpdateUserById(firstName, lastName, age, town, gender string, id int) error
 }
 
 type RegisterUserPayload struct {
@@ -34,4 +35,12 @@ type User struct {
 	Town      string    `json:"town"`
 	Gender    string    `json:"gender"`
 	CreatedAt time.Time `json:"createdAt"`
+}
+
+type UserUpdateData struct {
+	FirstName string `json:"firstName"`
+	LastName  string `json:"lastName"`
+	Age       string `json:"age"`
+	Town      string `json:"town"`
+	Gender    string `json:"gender"`
 }

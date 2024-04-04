@@ -83,3 +83,7 @@ func (m *mockUserSore) GetUserById(id int) (*types.User, error) {
 func (m *mockUserSore) CreateUser(types.User) error {
 	return nil
 }
+
+func (m *mockUserSore) UpdateUserById(firstName, lastName, age, town, gender string, id int) error {
+	return nil
+}

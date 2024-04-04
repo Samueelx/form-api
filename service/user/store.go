@@ -3,6 +3,7 @@ package user
 import (
 	"database/sql"
 	"fmt"
+	"log"
 
 	"github.com/Samueelx/form-api/types"
 )
@@ -58,6 +59,16 @@ func (s *Store) GetUserById(id int) (*types.User, error) {
 
 	return u, nil
 
+}
+func (s *Store) UpdateUserById(firstName, lastName, age, town, gender string, id int) error {
+	result, err := s.db.Query("UPDATE users SET firstName = ?, lastName = ?, age = ?, town = ?, gender = ? WHERE id = ?", firstName, lastName, age, town, gender, id)
+	if err != nil {
+		fmt.Println("Error updating user: ", err)
+		return err
+	}
+
+	log.Printf("Rows data after updating: %v\n", result)
+	return nil
 }
 
 func (s *Store) CreateUser(user types.User) error {

@@ -1,7 +1,9 @@
 package user
 
 import (
+	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"strconv"
 
@@ -26,6 +28,7 @@ func (h *Handler) RegisterRoutes(router *mux.Router) {
 	router.HandleFunc("/login", h.HandleLogin).Methods("POST")
 
 	router.HandleFunc("/users/{userID}", auth.WithJWTAuth(h.handleGetUser, h.store)).Methods(http.MethodGet)
+	router.HandleFunc("/users/{userID}", auth.WithJWTAuth(h.handleUpdateUser, h.store)).Methods(http.MethodPut)
 }
 
 func (h *Handler) HandleLogin(w http.ResponseWriter, r *http.Request) {
@@ -130,4 +133,36 @@ func (h *Handler) handleGetUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	utils.WriteJSON(w, http.StatusOK, user)
+}
+
+func (h *Handler) handleUpdateUser(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	str, ok := vars["userID"]
+	if !ok {
+		utils.WriteError(w, http.StatusBadRequest, fmt.Errorf("missing user ID"))
+		return
+	}
+
+	userID, err := strconv.Atoi(str)
+	if err != nil {
+		utils.WriteError(w, http.StatusBadRequest, fmt.Errorf("invalid user ID"))
+		return
+	}
+
+	var userUpdateData types.UserUpdateData
+	err = json.NewDecoder(r.Body).Decode(&userUpdateData)
+	if err != nil {
+		// Handle error parsing request body
+		utils.WriteError(w, http.StatusBadRequest, fmt.Errorf("invalid request body"))
+		log.Printf("Invalid request body: %v\n", userUpdateData)
+		return
+	}
+
+	err = h.store.UpdateUserById(userUpdateData.FirstName, userUpdateData.LastName, userUpdateData.Age, userUpdateData.Town, userUpdateData.Gender, userID)
+	if err != nil {
+		utils.WriteError(w, http.StatusInternalServerError, err)
+		return
+	}
+
+	utils.WriteJSON(w, http.StatusOK, map[string]string{"update": "User Updated Successfully"})
 }
