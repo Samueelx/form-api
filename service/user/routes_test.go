@@ -22,7 +22,7 @@ func TestUserServiceHandlers(t *testing.T) {
 			LastName:  "Mic",
 			Email:     "invalid",
 			Town:      "Kiambu",
-			Age:       19,
+			Age:       fmt.Sprint(19),
 			Gender:    "Male",
 			Password:  "asd",
 		}
@@ -48,7 +48,7 @@ func TestUserServiceHandlers(t *testing.T) {
 			LastName:  "Mic",
 			Email:     "valid@mail.com",
 			Town:      "Kiambu",
-			Age:       19,
+			Age:       fmt.Sprint(19),
 			Gender:    "Male",
 			Password:  "asd",
 		}
