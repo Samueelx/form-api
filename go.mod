@@ -1,6 +1,6 @@
 module github.com/Samueelx/form-api
 
-go 1.22.1
+go 1.21.4
 
 require (
 	github.com/go-playground/validator/v10 v10.19.0
