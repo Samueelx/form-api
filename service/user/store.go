@@ -71,12 +71,31 @@ func (s *Store) UpdateUserById(firstName, lastName, age, town, gender string, id
 	return nil
 }
 
+func (s *Store) DeleteUserById(id int) error {
+	result, err := s.db.Query("DELETE FROM users WHERE id = ?", id)
+	if err != nil {
+		log.Println("Error deleting a user: ", err)
+		return err
+	}
+
+	log.Printf("Rows data after user deletion: %v\n", result)
+	return nil
+}
+
 func (s *Store) CreateUser(user types.User) error {
 	_, err := s.db.Exec("INSERT INTO users (firstName, lastName, email, password, age, town, gender) VALUES(?, ?, ?, ?, ?, ?, ?)", user.FirstName, user.LastName, user.Email, user.Password, user.Age, user.Town, user.Gender)
 	if err != nil {
 		return err
 	}
 
+	return nil
+}
+
+func (s *Store) UpdatePassword(email, password string) error {
+	_, err := s.db.Exec("UPDATE users SET password = ? WHERE email = ?", password, email)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 

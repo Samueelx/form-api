@@ -87,3 +87,11 @@ func (m *mockUserSore) CreateUser(types.User) error {
 func (m *mockUserSore) UpdateUserById(firstName, lastName, age, town, gender string, id int) error {
 	return nil
 }
+
+func (m *mockUserSore) DeleteUserById(id int) error {
+	return nil
+}
+
+func (m *mockUserSore) UpdatePassword(email, password string) error {
+	return nil
+}

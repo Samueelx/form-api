@@ -8,6 +8,8 @@ type UserStore interface {
 	GetUserById(id int) (*User, error)
 	CreateUser(User) error
 	UpdateUserById(firstName, lastName, age, town, gender string, id int) error
+	DeleteUserById(id int) error
+	UpdatePassword(email, password string) error
 }
 
 type RegisterUserPayload struct {
