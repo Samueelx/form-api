@@ -39,7 +39,7 @@ To run this web application on your PC:
  
 
 ## Licence
- [MIT](https://github.com/Samueelx/form-api/blob/master/LICENsE)
+ [MIT](https://github.com/Samueelx/form-api/blob/main/LICENSE)
 
  ## Author
  Samuel Gitimu
